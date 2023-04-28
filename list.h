@@ -58,6 +58,13 @@ public:
         data[size++] = value;
     }
 
+    void push_front(T value) {
+        push_back(value);
+        for (int i = size - 1; i > 0; i--) {
+            swap(data[i], data[i - 1]);
+        }
+    }
+
     T operator[](int index) const {
         if (index < size) {
             return data[index];

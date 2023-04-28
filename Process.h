@@ -15,16 +15,13 @@ enum Directions {
     BOTTOM_LEFT,
 };
 
-struct Point {
-    int x, y;
-    friend ostream& operator<<(ostream& out, const Point& p) {
-        return out << "(" << p.x << ", " << p.y << ")";
-    }
-};
+
 
 struct Node {
     char type = 0;
-    int visitor = 0;
+    int visitor = -1;
+    int cost = 0;
+    Point position{};
     int id = -1;
 };
 
@@ -32,11 +29,13 @@ class Process {
 public:
     Process();
     void addCitiesToArr();
+    void addNeighbours();
     ~Process();
 private:
     Node** map;
     int rows, cols;
     City* cityArr;
+    int cityArrLen;
 private:
     tstring getCityName(Point cityPos);
     Point findLetterPos(Point cityPos);
