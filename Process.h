@@ -1,8 +1,10 @@
 #ifndef JAKDOJADE2_PROCESS_H
 #define JAKDOJADE2_PROCESS_H
 #include <iostream>
+#include "HashMap.h"
 #include "Town.h"
 using namespace std;
+
 
 enum Directions {
     UP,
@@ -35,6 +37,7 @@ private:
     Node** map;
     int rows, cols;
     City* cityArr;
+    HashMap cityHashMap;
     int cityArrLen;
 private:
     tstring getCityName(Point cityPos);

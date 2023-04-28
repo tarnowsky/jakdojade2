@@ -1,6 +1,4 @@
 #include <iostream>
-#include "tstring.h"
-#include "list.h"
 #include "Process.h"
 using namespace std;
 

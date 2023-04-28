@@ -36,6 +36,7 @@ void Process::addCitiesToArr() {
                 cityArr[map[i][j].id].setName(getCityName({j, i}));
                 cityArr[map[i][j].id].setId(map[i][j].id);
                 cityArr[map[i][j].id].setPosition({j, i});
+                cityHashMap.put(&(cityArr[map[i][j].id]), map[i][j].id);
             }
         }
     }
