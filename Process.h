@@ -32,12 +32,16 @@ public:
     Process();
     void addCitiesToArr();
     void addNeighbours();
+
+    HashMap& getCityHashMap() const;
+    City* getCityArr() const;
+
     ~Process();
 private:
     Node** map;
     int rows, cols;
     City* cityArr;
-    HashMap cityHashMap;
+    mutable HashMap cityHashMap;
     int cityArrLen;
 private:
     tstring getCityName(Point cityPos);

@@ -146,12 +146,6 @@ void Process::addNeighbours() {
                 } else throw logic_error("Found no possible direction for neighbour");
             }
         }
-//        // print neighbours
-//        cout << cityArr[i].getName() << endl;
-//        for (int j = 0; j < cityArr[i].getNeighbours().len(); j++) {
-//            cout << "\t" << cityArr[cityArr[i].getNeighbours()[j].cityId].getName();
-//            cout << " cost: " << cityArr[i].getNeighbours()[j].cost << endl;
-//        }
     }
 }
 
@@ -167,6 +161,14 @@ Process::~Process() {
     delete[] map;
 
     delete[] cityArr;
+}
+
+HashMap &Process::getCityHashMap() const {
+    return cityHashMap;
+}
+
+City *Process::getCityArr() const {
+    return cityArr;
 }
 
 

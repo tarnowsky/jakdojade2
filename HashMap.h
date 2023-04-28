@@ -4,16 +4,14 @@
 #include "Town.h"
 
 struct Pair {
-    City* city;
-    int id;
-    Pair* next = nullptr;
-    Pair(City *_city, int _id) : city(_city), id(_id), next(nullptr) {}
+    City* city = nullptr;
+    int id = -1;
 };
 
 class HashMap {
 private:
     static const int capacity = 10000;
-    Pair** table;
+    list<Pair> *table;
 public:
     HashMap();
 
@@ -27,7 +25,8 @@ public:
     int get(const tstring& _cityName);
 
     // Metoda usuwająca parę z mapy
-    void remove(const tstring& _cityName);
+
+    ~HashMap();
 };
 
 

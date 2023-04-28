@@ -1,66 +1,34 @@
 #include "HashMap.h"
 HashMap::HashMap() {
-    table = new Pair*[capacity];
-    for (int i = 0; i < capacity; i++)
-        table[i] = nullptr;
+    table = new list<Pair>[capacity];
 }
 
 // Hash funkcja
-int HashMap::hash(const tstring& _city) {
-    int hashVal = 0;
-    for (int i = 0; i < _city.len(); i++) {
-        hashVal += _city[i];
+int HashMap::hash(const tstring& _cityName) {
+    int hashVal = 1;
+    int prime = 2137;
+    for (int i = 0; i < _cityName.len(); i++) {
+        hashVal = (hashVal * prime + _cityName[i]) % capacity;
     }
     return hashVal % capacity;
 }
 
 // Metoda dodająca parę do mapy
 void HashMap::put(City* _city, int _id) {
-    Pair* p = new Pair(_city, _id);
     int index = hash(_city->getName());
-    if (table[index] == nullptr) {
-        table[index] = p;
-    }
-    else {
-        Pair* curr = table[index];
-        while (curr->city->getName() != _city->getName() && curr->next != nullptr)
-            curr = curr->next;
-        if (curr->city->getName() == _city->getName())
-            curr->id = _id;
-        else curr->next = p;
-    }
+    table[index].push_back({_city, _id});
 }
 
 // Metoda zwracająca wartość dla danego klucza
-int HashMap::get(const tstring& _city) {
-    int index = hash(_city);
-    Pair* curr = table[index];
-    while (curr != nullptr) {
-        if (curr->city->getName() == _city) {
-            return curr->id;
-        }
-        curr = curr->next;
-    }
+int HashMap::get(const tstring& _cityName) {
+    int index = hash(_cityName);
+    if (table[index].len() == 1) return table[index][0].id;
+    for (int i = 0; i < table[index].len(); i++)
+        if (table[index][i].city->getName() == _cityName)
+            return table[index][i].id;
     return -1; // klucz nieznaleziony
 }
 
-// Metoda usuwająca parę z mapy
-void HashMap::remove(const tstring& _city) {
-    int index = hash(_city);
-    Pair* curr = table[index];
-    Pair* prev = nullptr;
-    while (curr != nullptr) {
-        if (curr->city->getName() == _city) {
-            if (prev == nullptr) {
-                table[index] = curr->next;
-            }
-            else {
-                prev->next = curr->next;
-            }
-            delete curr;
-            return;
-        }
-        prev = curr;
-        curr = curr->next;
-    }
+HashMap::~HashMap() {
+    delete[] table;
 }
