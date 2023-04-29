@@ -46,6 +46,10 @@ tstring Process::getCityName(Point cityPos) {
     return parseCityName(findFirstLetterPos(findLetterPos(cityPos)));
 }
 
+int** Process::getNeighbours() const {
+    return neighbours;
+}
+
 Point Process::findLetterPos(Point cityPos) {
     for (int i = 0; i < 8; i++) {
         if ((cityPos.y == 0) && (i == UP || i == TOP_LEFT || i == TOP_RIGHT)) continue;
@@ -103,6 +107,7 @@ tstring Process::parseCityName(Point firstLetterPos) {
 }
 
 void Process::addNeighbours() {
+    neighbours = new int*[cityArrLen]{};
     for (int i = 0; i < cityArrLen; i++) {
         list<Node*> queue;
         map[cityArr[i].getPosition().y][cityArr[i].getPosition().x].visitor = cityArr[i].getId();
@@ -135,8 +140,10 @@ void Process::addNeighbours() {
                 if (poss_neighb) {
                     if (poss_neighb->visitor == cityArr[i].getId()) continue;
                     if (poss_neighb->type == '*') {
+                        neighbours[i] = new int[cityArrLen]{};
                         poss_neighb->visitor = cityArr[i].getId();
-                        cityArr[i].addNeighbour({poss_neighb->id,node->cost + 1});
+//                        cityArr[i].addNeighbour({poss_neighb->id,node->cost + 1});
+                        neighbours[i][poss_neighb->id] = node->cost + 1;
                     }
                     else if (poss_neighb->type == '#') {
                         poss_neighb->visitor = cityArr[i].getId();
@@ -146,6 +153,11 @@ void Process::addNeighbours() {
                 } else throw logic_error("Found no possible direction for neighbour");
             }
         }
+//        cout << cityArr[i].getName() << endl;
+//        for (int j = 0; j < cityArrLen; j++) {
+//            if (neighbours[i][j] > 0)
+//                cout << "\t" << cityArr[j].getName() << " cost: " << neighbours[i][j] << endl;
+//        }
     }
 }
 
@@ -161,6 +173,10 @@ Process::~Process() {
     delete[] map;
 
     delete[] cityArr;
+
+    for (int i = 0; i < cityArrLen; i++)
+        delete[] neighbours[i];
+    delete[] neighbours;
 }
 
 HashMap &Process::getCityHashMap() const {

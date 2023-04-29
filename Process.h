@@ -35,12 +35,14 @@ public:
 
     HashMap& getCityHashMap() const;
     City* getCityArr() const;
+    int** getNeighbours() const;
 
     ~Process();
 private:
     Node** map;
     int rows, cols;
     City* cityArr;
+    int** neighbours;
     mutable HashMap cityHashMap;
     int cityArrLen;
 private:

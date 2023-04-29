@@ -23,11 +23,3 @@ Point City::getPosition() const {
 int City::getId() const {
     return id;
 }
-
-void City::addNeighbour(Neighbour &&_neighbour) {
-    neighbours.push_back(_neighbour);
-}
-
-list<Neighbour> &City::getNeighbours() const {
-    return neighbours;
-}
