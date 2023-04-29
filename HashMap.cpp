@@ -4,7 +4,7 @@ HashMap::HashMap() {
 }
 
 // Hash funkcja
-int HashMap::hash(const tstring& _cityName) {
+int HashMap::hash(const tstring& _cityName) const {
     int hashVal = 1;
     int prime = 2137;
     for (int i = 0; i < _cityName.len(); i++) {
@@ -22,7 +22,6 @@ void HashMap::put(City* _city, int _id) {
 // Metoda zwracająca wartość dla danego klucza
 int HashMap::get(const tstring& _cityName) {
     int index = hash(_cityName);
-    if (table[index].len() == 1) return table[index][0].id;
     for (int i = 0; i < table[index].len(); i++)
         if (table[index][i].city->getName() == _cityName)
             return table[index][i].id;
@@ -31,4 +30,8 @@ int HashMap::get(const tstring& _cityName) {
 
 HashMap::~HashMap() {
     delete[] table;
+}
+
+HashMap::HashMap(int _size) : capacity(_size){
+    table = new list<Pair>[capacity];
 }

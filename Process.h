@@ -6,6 +6,12 @@
 using namespace std;
 
 
+struct Path {
+    int from;
+    int to;
+    int cost;
+};
+
 enum Directions {
     UP,
     DOWN,
@@ -32,20 +38,23 @@ public:
     Process();
     void addCitiesToArr();
     void addNeighbours();
+    void addFlights();
+    void exeCommands();
 
     HashMap& getCityHashMap() const;
     City* getCityArr() const;
-    int** getNeighbours() const;
 
     ~Process();
 private:
     Node** map;
     int rows, cols;
     City* cityArr;
-    int** neighbours;
     mutable HashMap cityHashMap;
     int cityArrLen;
 private:
+    static inline int findPlaceForPath(int _cost, list<Path>& queue);
+    void findPath(tstring& from, tstring& to, list<Path>& pathList, HashMap& hashPaths);
+    static inline void addAirport(tstring& _city);
     tstring getCityName(Point cityPos);
     Point findLetterPos(Point cityPos);
     inline Point findFirstLetterPos(Point letterPos);

@@ -10,13 +10,14 @@ struct Pair {
 
 class HashMap {
 private:
-    static const int capacity = 10000;
+    const int capacity = 7873;
     list<Pair> *table;
 public:
     HashMap();
+    explicit HashMap(int _size);
 
     // Hash funkcja
-    static int hash(const tstring& _cityName);
+    int hash(const tstring& _cityName) const;
 
     // Metoda dodająca parę do mapy
     void put(City* _city, int _id);

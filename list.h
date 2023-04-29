@@ -46,6 +46,16 @@ public:
         return *this;
     }
 
+    void insert(T value, int id) {
+        // znajdz miejsce
+        if (id == 0) push_front(value);
+        else {
+            push_back(value);
+            for (int i = size - 1; i > id; i--)
+                swap(data[i], data[i - 1]);
+        }
+    }
+
     void push_back(T value) {
         if (size == capacity) {
             T* new_data = new T[capacity * 2];
@@ -65,7 +75,7 @@ public:
         }
     }
 
-    T operator[](int index) const {
+    T& operator[](int index) const {
         if (index < size) {
             return data[index];
         } else {

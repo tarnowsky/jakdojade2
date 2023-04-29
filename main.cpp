@@ -8,6 +8,8 @@ int main() {
     Process p;
     p.addCitiesToArr();
     p.addNeighbours();
+    p.addFlights();
+    p.exeCommands();
 
     return 0;
 }

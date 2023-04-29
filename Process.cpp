@@ -46,9 +46,6 @@ tstring Process::getCityName(Point cityPos) {
     return parseCityName(findFirstLetterPos(findLetterPos(cityPos)));
 }
 
-int** Process::getNeighbours() const {
-    return neighbours;
-}
 
 Point Process::findLetterPos(Point cityPos) {
     for (int i = 0; i < 8; i++) {
@@ -107,7 +104,6 @@ tstring Process::parseCityName(Point firstLetterPos) {
 }
 
 void Process::addNeighbours() {
-    neighbours = new int*[cityArrLen]{};
     for (int i = 0; i < cityArrLen; i++) {
         list<Node*> queue;
         map[cityArr[i].getPosition().y][cityArr[i].getPosition().x].visitor = cityArr[i].getId();
@@ -140,10 +136,10 @@ void Process::addNeighbours() {
                 if (poss_neighb) {
                     if (poss_neighb->visitor == cityArr[i].getId()) continue;
                     if (poss_neighb->type == '*') {
-                        neighbours[i] = new int[cityArrLen]{};
                         poss_neighb->visitor = cityArr[i].getId();
-//                        cityArr[i].addNeighbour({poss_neighb->id,node->cost + 1});
-                        neighbours[i][poss_neighb->id] = node->cost + 1;
+                        cityArr[i].addNeighbour({poss_neighb->id,node->cost + 1});
+
+//                        neighbours[i][poss_neighb->id] = node->cost + 1;
                     }
                     else if (poss_neighb->type == '#') {
                         poss_neighb->visitor = cityArr[i].getId();
@@ -154,13 +150,134 @@ void Process::addNeighbours() {
             }
         }
 //        cout << cityArr[i].getName() << endl;
-//        for (int j = 0; j < cityArrLen; j++) {
-//            if (neighbours[i][j] > 0)
-//                cout << "\t" << cityArr[j].getName() << " cost: " << neighbours[i][j] << endl;
+//        for (int j = 0; j < cityArr[i].getNeighbours().len(); j++) {
+//            cout << "\t" << cityArr[i].getNeighbours()[j].cityId << endl;
 //        }
     }
 }
 
+void Process::addFlights() {
+    int flightNum, cost;
+    cin >> flightNum;
+    getchar();
+    while(flightNum--) {
+        tstring from, to;
+        addAirport(from);
+        addAirport(to);
+        cin >> cost;
+        getchar();
+
+        int fromId = cityHashMap.get(from);
+        int toId = cityHashMap.get(to);
+        int neighbId = cityArr[fromId].getNeighbourId(toId);
+
+        if (neighbId == -1)
+            cityArr[fromId].addNeighbour({toId, cost});
+        else if (cityArr[fromId].getNeighbours()[neighbId].cost > cost)
+            cityArr[fromId].getNeighbours()[neighbId].setCost(cost);
+    }
+//    for (int i = 0; i < cityArrLen; i++) {
+//        cout << cityArr[i].getName() << endl;
+//        for (int j = 0; j < cityArr[i].getNeighbours().len();j++) {
+//            cout << "\t" << cityArr[cityArr[i].getNeighbours()[j].cityId].getName() << " " << cityArr[i].getNeighbours()[j].cost << endl;
+//        }
+//    }
+}
+
+void Process::addAirport(tstring& _city) {
+    int c;
+    while((c = getchar()) != ' ') _city += (char)c;
+}
+
+void Process::findPath(tstring &from, tstring &to, list<Path>& pathList, HashMap& hashPaths) {
+    list<Path> queue;
+    int fromId = cityHashMap.get(from);
+    int toId = cityHashMap.get(to);
+    int cost, neighbId, currentCost = 0, pathId = 0;
+
+    for (int i = 0; i < cityArr[fromId].getNeighbours().len(); i++) {
+        neighbId = cityArr[fromId].getNeighbours()[i].cityId;
+        cost = cityArr[fromId].getNeighbours()[i].cost;
+
+        cityArr[neighbId].setVisitor(fromId);
+        queue.insert({fromId, neighbId, cost}, findPlaceForPath(cost, queue));
+    }
+
+    while (!queue.is_empty()) {
+
+        bool repeat = false;
+        Path p = queue.pop();
+
+        if (hashPaths.get(cityArr[p.to].getName()) != -1) continue;
+
+        pathList.push_back(p);
+        hashPaths.put(&(cityArr[p.to]), pathId++);
+//        cout << cityArr[p.from].getName() << "->";
+//        cout << cityArr[p.to].getName() << " cost: " << p.cost << endl;
+//
+        if (p.to == toId) return;
+
+        currentCost = p.cost;
+
+        for (int i = 0; i < cityArr[p.to].getNeighbours().len(); i++) {
+            neighbId = cityArr[p.to].getNeighbours()[i].cityId;
+            if (neighbId == cityArr[p.to].getVisitor()) continue;
+
+            cityArr[neighbId].setVisitor(p.to);
+            cost = currentCost + cityArr[p.to].getNeighbours()[i].cost;
+            queue.insert({p.to, neighbId, cost}, findPlaceForPath(cost, queue));
+        }
+    }
+}
+
+int Process::findPlaceForPath(int _cost, list<Path>& queue) {
+    int s, p = 0, k = queue.len();
+    while (p<k) {
+        s = (p + k - 1) / 2;
+        if (queue[s].cost >= _cost) p = s + 1;
+        if (queue[s].cost < _cost) k = s;
+    }
+    return k;
+}
+
+void Process::exeCommands() {
+    int commandsNum, mode, idOfToOnPathList;
+    cin >> commandsNum;
+    getchar();
+    while (commandsNum--) {
+        list<tstring> visitedCities;
+        list<Path> pathList;
+        HashMap hashPaths(2137);
+        tstring from, to;
+        addAirport(from);
+        addAirport(to);
+        cin >> mode;
+        getchar();
+
+        findPath(from, to, pathList, hashPaths);
+//
+        idOfToOnPathList = hashPaths.get(to);
+        if (from == to) cout << 0;
+        else {
+            cout << pathList[idOfToOnPathList].cost;
+            if (mode == 1) {
+                tstring cityName = cityArr[pathList[idOfToOnPathList].from].getName();
+                while (cityName != from) {
+                    visitedCities.push_back(cityName);
+                    cityName = cityArr[pathList[hashPaths.get(cityName)].from].getName();
+                }
+            }
+            for (int i = visitedCities.len() - 1; i >= 0; i--)
+                cout << " " << visitedCities[i];
+        }
+        cout << endl;
+//        cout << from << endl;
+//        for (int i = 0; i < pathList.len(); i++) {
+//            cout << "\t" << cityArr[pathList[i].to].getName() << " <- " << cityArr[pathList[i].from].getName();
+//            cout << " cost: " << pathList[i].cost << endl;
+//        }
+    }
+}
 
 
 
@@ -174,9 +291,7 @@ Process::~Process() {
 
     delete[] cityArr;
 
-    for (int i = 0; i < cityArrLen; i++)
-        delete[] neighbours[i];
-    delete[] neighbours;
+
 }
 
 HashMap &Process::getCityHashMap() const {
@@ -186,6 +301,11 @@ HashMap &Process::getCityHashMap() const {
 City *Process::getCityArr() const {
     return cityArr;
 }
+
+
+
+
+
 
 
 
