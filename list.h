@@ -46,7 +46,7 @@ public:
         return *this;
     }
 
-    void insert(T value, int id) {
+    void insert(const T& value, int id) {
         // znajdz miejsce
         if (id == 0) push_front(value);
         else {
@@ -56,7 +56,7 @@ public:
         }
     }
 
-    void push_back(T value) {
+    void push_back(const T& value) {
         if (size == capacity) {
             T* new_data = new T[capacity * 2];
             for (int i = 0; i < size; i++)
@@ -68,7 +68,7 @@ public:
         data[size++] = value;
     }
 
-    void push_front(T value) {
+    void push_front(const T& value) {
         push_back(value);
         for (int i = size - 1; i > 0; i--) {
             swap(data[i], data[i - 1]);
