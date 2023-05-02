@@ -5,10 +5,12 @@
 #include "Town.h"
 using namespace std;
 
+const int INF = 1e9;
 
-struct Path {
-    int from;
-    int to;
+
+
+struct Pair {
+    int city;
     int cost;
 };
 
@@ -22,8 +24,6 @@ enum Directions {
     TOP_LEFT,
     BOTTOM_LEFT,
 };
-
-
 
 struct Node {
     char type = 0;
@@ -41,19 +41,17 @@ public:
     void addFlights();
     void exeCommands();
 
-    HashMap& getCityHashMap() const;
-    City* getCityArr() const;
-
     ~Process();
 private:
     Node** map;
     int rows, cols;
     City* cityArr;
     mutable HashMap cityHashMap;
+    list<Pair> *adj;
     int cityArrLen;
 private:
-    static inline int findPlaceForPath(int _cost, list<Path>& queue);
-    void findPath(tstring& from, tstring& to, list<Path>& pathList, HashMap& hashPaths);
+    static inline int findPlaceForPath(int _cost, list<Pair>& queue);
+    int findPath(const int& start, const int& target, list<int>& path);
     static inline void addAirport(tstring& _city);
     tstring getCityName(Point cityPos);
     Point findLetterPos(Point cityPos);

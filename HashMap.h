@@ -3,7 +3,7 @@
 
 #include "Town.h"
 
-struct Pair {
+struct HashPair {
     City* city = nullptr;
     int id = -1;
 };
@@ -11,13 +11,12 @@ struct Pair {
 class HashMap {
 private:
     const int capacity = 7873;
-    list<Pair> *table;
+    list<HashPair> *table;
 public:
     HashMap();
-    explicit HashMap(int _size);
 
     // Hash funkcja
-    int hash(const tstring& _cityName) const;
+    [[nodiscard]] int hash(const tstring& _cityName) const;
 
     // Metoda dodająca parę do mapy
     void put(City* _city, int _id);

@@ -18,7 +18,7 @@ public:
     tstring& operator=(const tstring& other);
     tstring& operator=(tstring&& other) noexcept;
 
-    int len() const;
+    [[nodiscard]] int len() const;
 
 private:
     list<char> data;

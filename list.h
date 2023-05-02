@@ -12,6 +12,13 @@ public:
         size = 0;
     }
 
+    list(int num, T value) {
+        capacity = num;
+        data = new T[capacity];
+        size = 0;
+        for (int i = 0; i < capacity; i++) push_back(value);
+    }
+
     list(const list& other) : size(other.size), data(new T[other.size]) {
         for (int i = 0; i < size; i++) {
             data[i] = other.data[i];
@@ -70,20 +77,16 @@ public:
 
     void push_front(const T& value) {
         push_back(value);
-        for (int i = size - 1; i > 0; i--) {
+        for (int i = size - 1; i > 0; i--)
             swap(data[i], data[i - 1]);
-        }
+
     }
 
     T& operator[](int index) const {
-        if (index < size) {
-            return data[index];
-        } else {
-            throw out_of_range("Index out of range");
-        }
+        return data[index];
     }
 
-    int len() const{
+    [[nodiscard]] int len() const{
         return size;
     }
 

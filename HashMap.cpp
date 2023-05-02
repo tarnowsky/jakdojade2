@@ -1,6 +1,6 @@
 #include "HashMap.h"
 HashMap::HashMap() {
-    table = new list<Pair>[capacity];
+    table = new list<HashPair>[capacity];
 }
 
 // Hash funkcja
@@ -32,6 +32,3 @@ HashMap::~HashMap() {
     delete[] table;
 }
 
-HashMap::HashMap(int _size) : capacity(_size){
-    table = new list<Pair>[capacity];
-}
