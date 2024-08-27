@@ -1,4 +1,4 @@
-# JakDojade v2 🇵🇱
+# 🇵🇱 JakDojade v2
 
 ## Opis
 Projekt aplikacji "JakDojadę" opracowanej na potrzeby przedmiotu Algorytmy i Struktury Danych.
@@ -27,7 +27,7 @@ rozwiązałoby istniejący problem.
 - Optymalizacja implementacji tablicy haszującej
 
 
-# HowToGetThere v2 🇺🇸
+# 🇺🇸 HowToGetThere v2
 
 ## Description
 Project of the "HowToGetThere" application developed for the Algorithms and Data Structures course.
