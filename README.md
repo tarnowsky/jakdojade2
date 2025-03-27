@@ -1,33 +1,4 @@
-# 🇵🇱 JakDojade v2
-
-## Opis
-Projekt aplikacji "JakDojadę" opracowanej na potrzeby przedmiotu Algorytmy i Struktury Danych.
-W projekcie zaimplementowano algorytm Dijkstry oraz prostą tablicę haszującą.
-Program umożliwia znalezienie najkrótszej ścieżki między dwoma miastami
-oraz przedstawienie trasy, która została przy tym wyznaczona.
-
-## Wyniki testów
-Aplikacja pomyślnie przeszła 13 z 14 testów. Prawdopodobnie udoskonalenie implementacji tablicy haszującej
-rozwiązałoby istniejący problem.
-
-## Stack technologiczny
-- Język programowania: C++
-- Teoria grafów
-- Własnoręcznie stworzone rozwiązania ze standardowej biblioteki C++:
-  - Wektory (vectors)
-  - Kolejki (queues)
-  - Tablice haszujące (hashmaps)
-
-## Główne funkcjonalności
-1. Implementacja algorytmu Dijkstry
-2. Wyszukiwanie najkrótszej ścieżki między miastami
-3. Prezentacja wyznaczonej trasy
-
-## Potencjalne obszary do poprawy
-- Optymalizacja implementacji tablicy haszującej
-
-
-# 🇺🇸 HowToGetThere v2
+# HowToGetThere v2
 
 ## Description
 Project of the "HowToGetThere" application developed for the Algorithms and Data Structures course.
